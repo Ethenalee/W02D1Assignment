@@ -3,12 +3,18 @@ module.exports = function getHTML (options, callback) {
 var https = require('https');
 
     var call = function(response) {
-      console.log('\n');
+      response.setEncoding('utf8');
+
+
+      var dataa = "";
 
       response.on('data', function(chunk) {
-        var data = chunk;
-        callback(data.toString());
-      })
+        dataa += chunk;
+      });
+
+      response.on('end', function() {
+        callback(dataa);
+      });
     }
 
     https.request(options, call).end();
